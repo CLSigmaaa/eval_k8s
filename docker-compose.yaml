@@ -1,0 +1,36 @@
+version: '3.8'
+services:
+  flask-adminator:
+    restart: always
+    image: "clsigmaaa/flask-adminator:alpine"
+  flask-light-bootstrap:
+    restart: always
+    image: "clsigmaaa/flask-light-bootstrap:alpine"
+  flask-material-dashboard:
+    restart: always
+    image: "clsigmaaa/flask-material-dashboard:alpine"
+  flask-soft-ui-dashboard:
+    restart: always
+    image: "clsigmaaa/flask-soft-ui-dashboard:alpine"
+    deploy:
+      mode: replicated
+      replicas: 5
+  flask-volt-dashboard:
+    restart: always
+    image: "clsigmaaa/flask-volt-dashboard:alpine"
+    ports:
+      - "5009:5009"
+  nginx:
+    image: nginx:mainline-alpine3.18-slim
+    volumes:
+      - ./nginx:/etc/nginx/conf.d
+    depends_on:
+      - flask-adminator
+      - flask-light-bootstrap
+      - flask-material-dashboard
+      - flask-soft-ui-dashboard
+    ports:
+      - "80:80"
+      - "4000:4000"
+      - "5000:5000"
+      - "6001:6001"
